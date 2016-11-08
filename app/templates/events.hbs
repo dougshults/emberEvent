@@ -1,0 +1,12 @@
+{{outlet}}
+<h1> Events </h1>
+{{#each model as |event|}}
+<div class="well">
+<h4>{{event.title}}</h4>
+<p> Date:{{formatDate event.date}} </p>
+<p>{{event.description}}</p>
+{{!-- <iframe src="{{event.map}}" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe> --}}
+</div>
+{{/each}}
+
+
