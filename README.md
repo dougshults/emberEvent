@@ -1,7 +1,7 @@
 # Ember Event
 
 This README outlines the details of collaborating on this Ember application.
-This is uses firebase to store data and is based on the following [demo](https://www.youtube.com/watch?v=su1jfjD9TaU) with updates made to the routes, components, controllers, and model info. A walk through of an Ember.js CRUD app with Firebase
+The app uses firebase to store data and is based on the following [demo](https://www.youtube.com/watch?v=su1jfjD9TaU) with updates made to the routes, components, controllers, and model info. Basically, this is a walk through of an Ember.js CRUD app with Firebase
 
 ## Prerequisites
 
