@@ -26,7 +26,42 @@ define('ember-starter/app', ['exports', 'ember', 'ember-starter/resolver', 'embe
   exports['default'] = App;
 });
 define('ember-starter/controllers/events', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Controller.extend({});
+  exports['default'] = _ember['default'].Controller.extend({
+    actions: {
+      deleteEvent: function deleteEvent(id) {
+        this.store.findRecord('event', id).then(function (event) {
+          event.deleteRecord();
+
+          event.save();
+        });
+      }
+    }
+  });
+});
+define('ember-starter/controllers/events/edit', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+    actions: {
+      editEvent: function editEvent(id) {
+        var title = this.get('model.title');
+        var description = this.get('model.description');
+        var date = this.get('model.date');
+
+        // Update tasks
+        this.store.findRecord('event', id).then(function (event) {
+          var self = this;
+          event.set('title', title);
+          event.set('description', description);
+          event.set('date', new Date(date));
+
+          // Save to Database
+          event.save();
+
+          self.transitionToRoute('events');
+        });
+      }
+    }
+
+  });
 });
 define('ember-starter/controllers/events/new', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Controller.extend({
@@ -284,8 +319,9 @@ define('ember-starter/router', ['exports', 'ember', 'ember-starter/config/enviro
   });
 
   Router.map(function () {
-    this.route('events', function () {
+    this.resource('events', function () {
       this.route('new');
+      this.route('edit', { path: '/edit/:event_id' });
     });
   });
 
@@ -297,6 +333,9 @@ define('ember-starter/routes/events', ['exports', 'ember'], function (exports, _
       return this.store.findAll('event');
     }
   });
+});
+define('ember-starter/routes/events/edit', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({});
 });
 define('ember-starter/routes/events/new', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
@@ -457,7 +496,7 @@ define("ember-starter/templates/application", ["exports"], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("a");
         dom.setAttribute(el4, "class", "navbar-brand");
-        dom.setAttribute(el4, "href", "#");
+        dom.setAttribute(el4, "href", "/");
         var el5 = dom.createTextNode("Ember App");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
@@ -549,6 +588,45 @@ define("ember-starter/templates/application", ["exports"], function (exports) {
 define("ember-starter/templates/events", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.9.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 5,
+                "column": 4
+              },
+              "end": {
+                "line": 5,
+                "column": 54
+              }
+            },
+            "moduleName": "ember-starter/templates/events.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["content", "event.title", ["loc", [null, [5, 39], [5, 54]]], 0, 0, 0, 0]],
+          locals: [],
+          templates: []
+        };
+      })();
       return {
         meta: {
           "revision": "Ember@2.9.1",
@@ -595,6 +673,13 @@ define("ember-starter/templates/events", ["exports"], function (exports) {
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "class", "btn btn-danger");
+          var el3 = dom.createTextNode("Delete");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -604,15 +689,17 @@ define("ember-starter/templates/events", ["exports"], function (exports) {
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [0]);
-          var morphs = new Array(3);
+          var element1 = dom.childAt(element0, [7]);
+          var morphs = new Array(4);
           morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 0, 0);
           morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 1, 1);
           morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 0, 0);
+          morphs[3] = dom.createElementMorph(element1);
           return morphs;
         },
-        statements: [["content", "event.title", ["loc", [null, [5, 4], [5, 19]]], 0, 0, 0, 0], ["inline", "formatDate", [["get", "event.date", ["loc", [null, [6, 22], [6, 32]]], 0, 0, 0, 0]], [], ["loc", [null, [6, 9], [6, 34]]], 0, 0], ["content", "event.description", ["loc", [null, [7, 3], [7, 24]]], 0, 0, 0, 0]],
+        statements: [["block", "link-to", ["events.edit", ["get", "event.id", ["loc", [null, [5, 29], [5, 37]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [5, 4], [5, 66]]]], ["inline", "formatDate", [["get", "event.date", ["loc", [null, [6, 22], [6, 32]]], 0, 0, 0, 0]], [], ["loc", [null, [6, 9], [6, 34]]], 0, 0], ["content", "event.description", ["loc", [null, [7, 3], [7, 24]]], 0, 0, 0, 0], ["element", "action", ["deleteEvent", ["get", "event.id", ["loc", [null, [8, 32], [8, 40]]], 0, 0, 0, 0]], [], ["loc", [null, [8, 9], [8, 42]]], 0, 0]],
         locals: ["event"],
-        templates: []
+        templates: [child0]
       };
     })();
     return {
@@ -666,7 +753,7 @@ define("ember-starter/templates/events", ["exports"], function (exports) {
     };
   })());
 });
-define("ember-starter/templates/events/new", ["exports"], function (exports) {
+define("ember-starter/templates/events/edit", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
       meta: {
@@ -678,11 +765,11 @@ define("ember-starter/templates/events/new", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 21,
+            "line": 17,
             "column": 0
           }
         },
-        "moduleName": "ember-starter/templates/events/new.hbs"
+        "moduleName": "ember-starter/templates/events/edit.hbs"
       },
       isEmpty: false,
       arity: 0,
@@ -691,7 +778,7 @@ define("ember-starter/templates/events/new", ["exports"], function (exports) {
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("h2");
-        var el2 = dom.createTextNode("New Event ");
+        var el2 = dom.createTextNode("Edit Event ");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -705,23 +792,6 @@ define("ember-starter/templates/events/new", ["exports"], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("label");
         var el4 = dom.createTextNode("Title");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment("");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "form-group");
-        var el3 = dom.createTextNode("\n");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("label");
-        var el4 = dom.createTextNode("Link to Map");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n");
@@ -781,16 +851,127 @@ define("ember-starter/templates/events/new", ["exports"], function (exports) {
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [2]);
-        var element1 = dom.childAt(element0, [9]);
-        var morphs = new Array(5);
+        var element1 = dom.childAt(element0, [7]);
+        var morphs = new Array(4);
         morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 3, 3);
         morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 3, 3);
         morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 3, 3);
-        morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 3, 3);
-        morphs[4] = dom.createElementMorph(element1);
+        morphs[3] = dom.createElementMorph(element1);
         return morphs;
       },
-      statements: [["inline", "input", [], ["type", "text", "class", "form-control", "value", ["subexpr", "@mut", [["get", "title", ["loc", [null, [5, 47], [5, 52]]], 0, 0, 0, 0]], [], [], 0, 0], "placeholder", "Add Event..."], ["loc", [null, [5, 0], [5, 81]]], 0, 0], ["inline", "input", [], ["type", "text", "class", "form-control", "value", ["subexpr", "@mut", [["get", "map", ["loc", [null, [9, 47], [9, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [9, 0], [9, 52]]], 0, 0], ["inline", "input", [], ["type", "date", "class", "form-control", "value", ["subexpr", "@mut", [["get", "date", ["loc", [null, [13, 47], [13, 51]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [13, 0], [13, 53]]], 0, 0], ["inline", "textarea", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "description", ["loc", [null, [17, 38], [17, 49]]], 0, 0, 0, 0]], [], [], 0, 0], "placeholder", "Describe Event..."], ["loc", [null, [17, 0], [17, 83]]], 0, 0], ["element", "action", ["addEvent"], [], ["loc", [null, [19, 8], [19, 29]]], 0, 0]],
+      statements: [["inline", "input", [], ["type", "text", "class", "form-control", "value", ["subexpr", "@mut", [["get", "model.title", ["loc", [null, [5, 47], [5, 58]]], 0, 0, 0, 0]], [], [], 0, 0], "placeholder", "Add Event..."], ["loc", [null, [5, 0], [5, 87]]], 0, 0], ["inline", "input", [], ["type", "date", "class", "form-control", "value", ["subexpr", "@mut", [["get", "model.date", ["loc", [null, [9, 47], [9, 57]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [9, 0], [9, 59]]], 0, 0], ["inline", "textarea", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "model.description", ["loc", [null, [13, 38], [13, 55]]], 0, 0, 0, 0]], [], [], 0, 0], "placeholder", "Describe Event..."], ["loc", [null, [13, 0], [13, 89]]], 0, 0], ["element", "action", ["editEvent", ["get", "model.id", ["loc", [null, [15, 29], [15, 37]]], 0, 0, 0, 0]], [], ["loc", [null, [15, 8], [15, 39]]], 0, 0]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define("ember-starter/templates/events/new", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@2.9.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 17,
+            "column": 0
+          }
+        },
+        "moduleName": "ember-starter/templates/events/new.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("h2");
+        var el2 = dom.createTextNode("New Event ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("form");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "form-group");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("label");
+        var el4 = dom.createTextNode("Title");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "form-group");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("label");
+        var el4 = dom.createTextNode("Event Date");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "form-group");
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("label");
+        var el4 = dom.createTextNode("Description");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "class", "btn btn-primary");
+        var el3 = dom.createTextNode("Submit");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [2]);
+        var element1 = dom.childAt(element0, [7]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 3, 3);
+        morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 3, 3);
+        morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 3, 3);
+        morphs[3] = dom.createElementMorph(element1);
+        return morphs;
+      },
+      statements: [["inline", "input", [], ["type", "text", "class", "form-control", "value", ["subexpr", "@mut", [["get", "title", ["loc", [null, [5, 47], [5, 52]]], 0, 0, 0, 0]], [], [], 0, 0], "placeholder", "Add Event..."], ["loc", [null, [5, 0], [5, 81]]], 0, 0], ["inline", "input", [], ["type", "date", "class", "form-control", "value", ["subexpr", "@mut", [["get", "date", ["loc", [null, [9, 47], [9, 51]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [9, 0], [9, 53]]], 0, 0], ["inline", "textarea", [], ["class", "form-control", "value", ["subexpr", "@mut", [["get", "description", ["loc", [null, [13, 38], [13, 49]]], 0, 0, 0, 0]], [], [], 0, 0], "placeholder", "Describe Event..."], ["loc", [null, [13, 0], [13, 83]]], 0, 0], ["element", "action", ["addEvent"], [], ["loc", [null, [15, 8], [15, 29]]], 0, 0]],
       locals: [],
       templates: []
     };
@@ -835,7 +1016,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("ember-starter/app")["default"].create({"name":"ember-starter","version":"0.0.0+2f1c9d60"});
+  require("ember-starter/app")["default"].create({"name":"ember-starter","version":"0.0.0+fd5f722b"});
 }
 
 /* jshint ignore:end */

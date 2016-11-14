@@ -27,6 +27,15 @@ define('ember-starter/tests/controllers/events.jshint', ['exports'], function (e
     assert.ok(true, 'controllers/events.js should pass jshint.');
   });
 });
+define('ember-starter/tests/controllers/events/edit.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | controllers/events/edit.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'controllers/events/edit.js should pass jshint.');
+  });
+});
 define('ember-starter/tests/controllers/events/new.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -127,7 +136,7 @@ define('ember-starter/tests/helpers/format-date.jshint', ['exports'], function (
   QUnit.module('JSHint | helpers/format-date.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'helpers/format-date.js should pass jshint.\nhelpers/format-date.js: line 4, col 10, \'moment\' is not defined.\n\n1 error');
+    assert.ok(true, 'helpers/format-date.js should pass jshint.');
   });
 });
 define('ember-starter/tests/helpers/module-for-acceptance', ['exports', 'qunit', 'ember', 'ember-starter/tests/helpers/start-app', 'ember-starter/tests/helpers/destroy-app'], function (exports, _qunit, _ember, _emberStarterTestsHelpersStartApp, _emberStarterTestsHelpersDestroyApp) {
@@ -341,6 +350,15 @@ define('ember-starter/tests/routes/events.jshint', ['exports'], function (export
     assert.ok(true, 'routes/events.js should pass jshint.');
   });
 });
+define('ember-starter/tests/routes/events/edit.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/events/edit.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/events/edit.js should pass jshint.');
+  });
+});
 define('ember-starter/tests/routes/events/new.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -385,6 +403,28 @@ define('ember-starter/tests/unit/controllers/events-test.jshint', ['exports'], f
     assert.ok(true, 'unit/controllers/events-test.js should pass jshint.');
   });
 });
+define('ember-starter/tests/unit/controllers/events/edit-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('controller:events/edit', 'Unit | Controller | events/edit', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  // Replace this with your real tests.
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+});
+define('ember-starter/tests/unit/controllers/events/edit-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/controllers/events/edit-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/events/edit-test.js should pass jshint.');
+  });
+});
 define('ember-starter/tests/unit/controllers/events/new-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('controller:events/new', 'Unit | Controller | events/new', {
@@ -405,6 +445,28 @@ define('ember-starter/tests/unit/controllers/events/new-test.jshint', ['exports'
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/events/new-test.js should pass jshint.');
+  });
+});
+define('ember-starter/tests/unit/controllers/tasks/edit-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('controller:tasks/edit', 'Unit | Controller | tasks/edit', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  // Replace this with your real tests.
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+});
+define('ember-starter/tests/unit/controllers/tasks/edit-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/controllers/tasks/edit-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/tasks/edit-test.js should pass jshint.');
   });
 });
 define('ember-starter/tests/unit/models/event-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -450,6 +512,27 @@ define('ember-starter/tests/unit/routes/events-test.jshint', ['exports'], functi
     assert.ok(true, 'unit/routes/events-test.js should pass jshint.');
   });
 });
+define('ember-starter/tests/unit/routes/events/edit-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:events/edit', 'Unit | Route | events/edit', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('ember-starter/tests/unit/routes/events/edit-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/events/edit-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/events/edit-test.js should pass jshint.');
+  });
+});
 define('ember-starter/tests/unit/routes/events/new-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('route:events/new', 'Unit | Route | events/new', {
@@ -469,6 +552,27 @@ define('ember-starter/tests/unit/routes/events/new-test.jshint', ['exports'], fu
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/events/new-test.js should pass jshint.');
+  });
+});
+define('ember-starter/tests/unit/routes/tasks/edit-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:tasks/edit', 'Unit | Route | tasks/edit', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('ember-starter/tests/unit/routes/tasks/edit-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/tasks/edit-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/tasks/edit-test.js should pass jshint.');
   });
 });
 /* jshint ignore:start */
